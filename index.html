@@ -1,16 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js" defer></script>
+    <script src="app.js" defer></script>
     <title>Angular JS</title>
 </head>
 <body>
-    <h1>Angular Bro!</h1>
-    <input type="test" ng-model="favMeal" placeholder="enter your fav meal">
-    <p>Your favorite meal is: {{ favMeal }}</p>
+    <header ng-include="'header.html'"></header>
+    <div class="content">
+        <div ng-controller="AppController">
+            <button ng-click="order = 'name'">Order by name</button>
+            <button ng-click="order = 'belt'">Order by belt</button>
+            
+            <input type="text" ng-model="search" placeholder="Search for ninjas">
+            <ul>
+                <li ng-repeat="ninja in ninjas | orderBy: order | filter: search" ng-show="ninja.available">
+                    <img ng-src="{{ninja.thumb}}" alt="ninja.name" ng-show="ninja.thumb">
+                    <img ng-src="img/placeholder.png" alt="placeholder" ng-show="!ninja.thumb">
+                    <h3>{{ ninja.name }} - {{ ninja.rate | currency}}</h3> 
+                    <div class="remove" ng-click="removeNinja(ninja)">x</div>
+                    <span class="belt" style="background: {{ninja.belt}}">{{ninja.belt}} belt</span>
+                    <!-- <span class="available" ng-show="ninja.available">Available</span>
+                    <span class="unavailable" ng-show="!ninja.available">Unavailable</span> -->
+                </li>
+            </ul>
+            <form ng-submit="addNinja()">
+                <input type="text" placeholder="Enter Name" ng-model="newNinja.name">
+                <input type="text" placeholder="Enter Belt" ng-model="newNinja.belt">
+                <input type="text" placeholder="Enter Rate in $" ng-model="newNinja.rate">
+                <input type="submit" value="Add new ninja" >
+            </form>
+        </div>
+    </div>
+
+
 </body>
 </html>
